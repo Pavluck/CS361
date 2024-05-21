@@ -86,3 +86,7 @@ An example using JavaScript to fetch from the microservice REST API to obtain a 
         });
 
 This microservice is maintained by Natasha that works with Nancy's program.
+
+## UML Diagram:
+![UML_Diagram](https://github.com/Pavluck/CS361/blob/master/UML_diagram.png?raw=true)
+
