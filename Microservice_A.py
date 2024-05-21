@@ -3,20 +3,17 @@
 
 import random
 import colorsys
-from flask import *
 
-HOST = "localhost"
+from flask import *
+from flask_json import FlaskJSON, json_response, JsonError
+
 PORT = 2133
 
 app = Flask(__name__)
+json = FlaskJSON(app)
 
-@app.route('/v1/random_hex')
-def random_hex():
-    """Given a color category, will generate a random hex value"""
 
-    category = request.args.get('category')
-    # if there is a category, use it, else, generate randomly
-
+def generate_random_hex(category):
     if category:
         category = category.upper()
 
@@ -37,12 +34,12 @@ def random_hex():
         min_value = 0.2
         max_value = 1
     elif category == 'ORANGE':
-        min_hue = 19
+        min_hue = 15
         max_hue = 40
-        min_sat = 0.25
+        min_sat = 0.6
         max_sat = 1
-        min_value = 0.2
-        max_value = 0.8
+        min_value = 0.5
+        max_value = 1
     elif category == 'YELLOW':
         min_hue = 35
         max_hue = 70
@@ -87,13 +84,23 @@ def random_hex():
 
     hex_color_str = '#' + f'{red:02x}{green:02x}{blue:02x}'
     std_color = hex_color_str
-
     print(str(category) + ' = ' + str(std_color))
 
-    response = make_response(std_color)
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    # this allows the browser to access my code (do not delete)
-    return response
+    return std_color
+
+
+@app.route('/v1/random_hex')
+def random_hex():
+    """Given a color category, will generate a random hex value"""
+    try:
+        category = request.args.get('category')
+        hex_color_str = generate_random_hex(category)
+        response = json_response(color=hex_color_str)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        # this allows the browser to access my code (do not delete)
+        return response
+    except Exception as e:
+        raise JsonError(Description="Oops")
 
 
 if __name__ == '__main__':

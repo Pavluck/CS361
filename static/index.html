@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name="robots" content="noindex,noarchive, nofollow" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Color parsing program</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+    <script>
+        const PATH = '/random_hex'
+
+        function getRandomColor() {
+            var category_element = document.getElementById("category");
+            var value = category_element.value;
+            var category_value = category_element.options[category_element.selectedIndex].text;
+
+            fetch(PATH + '?category=' + category_value)
+                .then(response => {
+                    console.log(response);
+                    return response.json()
+                })
+                .then(data => {
+                    console.log(data);
+                    document.getElementById("color-output").style.backgroundColor = data['color'];
+                    document.getElementById("color-output-text").innerText = data['color'];
+                });
+        }
+    </script>
+</head>
+<body>
+    <header><h1>Color Parsing Program</h1></header>
+
+    <nav>
+        <a href="GUI_home.html">Home</a>
+        <a href="history.html">Color History</a>
+    </nav>
+    <main>
+        <section>
+            <h2>Welcome to the color parsing program, 
+                by Natasha Pavelek</h2>
+                <article>
+                    <p>
+                        You can generate a color to view and collect its hex value
+                    </p>
+                    <h3>Please select a color to get started</h3>
+                    <!-- Sprint 1: Working home page with buttons and heuristics  -->
+
+                <legend>Color Selection</legend>
+                <p>
+                  <select name="color" id="category">
+                    <option value="Red">Red</option>
+                    <option value="Orange">Orange</option>
+                    <option value="Yellow">Yellow</option>
+                    <option value="Green">Green</option>
+                    <option value="Blue">Blue</option>
+                    <option value="Purple">Purple</option>
+                  </select>
+                </p>
+                
+        
+                <p>
+                    <!-- Button will generate a random hex value within the color category --> 
+                    <button onclick="getRandomColor();">Generate Color</button>
+                </p>
+        
+                <p>
+                    <!-- Display the Color in a box -->
+                   Your Color:
+                   <div id="color-output" class="color-output" style="background-color: black;"></div>
+                </p>
+        
+                <p>
+                    <!-- Display the hex value generated -->
+                    The hex value of your color is: <span id="color-output-text"></span>
+                </p>
+            </article>
+            <article >
+                <h3>Time Cost</h3>
+                <p>
+                    If you do not like the color(s) generated, then you can try again. 
+                    This program cannot filter by brightness, shade, or tint. 
+                    If may take time to find the exact color that you are looking for. 
+                    Note: The Color History can only show the past 10 colors
+                </p>
+                <p>
+                    <a href="history.html">Color History</a>
+                </p>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p> &copy; 2024 Natasha Pavelek</p>
+    </footer>
+</body>
+
+</html>
